@@ -1,0 +1,5 @@
+.kitchen
+Berksfile.lock
+
+.vagrant
+vagrant.*override*.yml

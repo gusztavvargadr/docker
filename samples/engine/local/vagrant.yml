@@ -1,0 +1,24 @@
+---
+defaults:
+  machines:
+    core: &machine_core
+      providers:
+        virtualbox:
+        hyperv:
+
+environment: engine.samples.docker
+
+machines:
+  u16:
+    <<: *machine_core
+    box: gusztavvargadr/u16
+    provisioners:
+      docker:
+      shell:
+        inline: docker run hello-world
+  w16sc:
+    <<: *machine_core
+    box: gusztavvargadr/w16sc-de
+    provisioners:
+      shell:
+        inline: docker run hello-world
