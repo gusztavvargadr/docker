@@ -1,0 +1,18 @@
+version: "3"
+services:
+  linux:
+    image: alpine:latest
+    command: ping docker.com
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == worker
+  windows:
+    image: microsoft/nanoserver:latest
+    command: ping -t docker.com
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == worker

@@ -1,0 +1,50 @@
+---
+defaults:
+  machines:
+    core: &machine_core
+      providers:
+        virtualbox:
+        hyperv:
+    u16: &machine_u16
+      <<: *machine_core
+      box: gusztavvargadr/u16
+    w16sc: &machine_w16sc
+      <<: *machine_core
+      box: gusztavvargadr/w16sc-de
+
+environment: swarm.samples.docker
+
+machines:
+  bootstrap:
+    <<: *machine_u16
+    provisioners:
+      docker:
+      shell:
+        path: init.sh
+        args: eth0
+  manager:
+    <<: *machine_u16
+    provisioners:
+      docker:
+      shell:
+        path: join.sh
+        args:
+          - bootstrap
+          - <%= ENV['DOCKER_SWARM_MANAGER_TOKEN'] %>
+  worker-u16:
+    <<: *machine_u16
+    provisioners:
+      docker:
+      shell:
+        path: join.sh
+        args:
+          - manager
+          - <%= ENV['DOCKER_SWARM_WORKER_TOKEN'] %>
+  worker-w16sc:
+    <<: *machine_w16sc
+    provisioners:
+      shell:
+        path: join.ps1
+        args:
+          - manager.swarm.samples.docker.local
+          - <%= ENV['DOCKER_SWARM_WORKER_TOKEN'] %>

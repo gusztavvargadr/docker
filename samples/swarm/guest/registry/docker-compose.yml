@@ -1,0 +1,12 @@
+version: "3"
+services:
+  core:
+    image: registry:latest
+    ports:
+      - "80:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker

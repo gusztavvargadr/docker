@@ -6,7 +6,7 @@ defaults:
         virtualbox:
         hyperv:
 
-environment: engine.samples.docker
+environment: host.engine.samples.docker
 
 machines:
   u16:

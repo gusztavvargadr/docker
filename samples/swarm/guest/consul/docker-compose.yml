@@ -1,0 +1,73 @@
+version: "3"
+services:
+  bootstrap:
+    image: consul:latest
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    command:
+      - agent
+      - -server
+      - -bootstrap-expect=1
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        # order: start-first
+  server:
+    image: consul:latest
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    command:
+      - agent
+      - -ui
+      - -retry-join=bootstrap
+      - -retry-join=server
+      - -client=0.0.0.0
+      - -server
+    ports:
+      - "8500:8500"
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        # order: start-first
+  client:
+    image: consul:latest
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    command:
+      - agent
+      - -ui
+      - -retry-join=server
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+        # order: start-first
+
+# check vagrant sample for more options
+#   datacenter:
+#   "acl_agent_token": "",
+#   "acl_datacenter": "dc1",
+#   "acl_default_policy": "deny",
+#   "acl_master_token": "",
+#   "encrypt": "",

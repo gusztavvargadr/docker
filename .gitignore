@@ -3,3 +3,5 @@ Berksfile.lock
 
 .vagrant
 vagrant.*override*.yml
+
+.docker
