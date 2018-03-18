@@ -28,7 +28,6 @@ services:
       - agent
       - -ui
       - -retry-join=bootstrap
-      - -retry-join=server
       - -client=0.0.0.0
       - -server
     ports:
@@ -38,6 +37,7 @@ services:
       placement:
         constraints:
           - node.role == manager
+          - node.platform.os == linux
       restart_policy:
         condition: on-failure
       update_config:
@@ -57,6 +57,7 @@ services:
       placement:
         constraints:
           - node.role == worker
+          - node.platform.os == linux
       restart_policy:
         condition: on-failure
       update_config:

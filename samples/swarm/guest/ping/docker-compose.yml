@@ -8,6 +8,7 @@ services:
       placement:
         constraints:
           - node.role == worker
+          - node.platform.os == linux
   windows:
     image: microsoft/nanoserver:latest
     command: ping -t docker.com
@@ -16,3 +17,4 @@ services:
       placement:
         constraints:
           - node.role == worker
+          - node.platform.os == windows

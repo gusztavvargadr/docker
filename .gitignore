@@ -4,4 +4,7 @@ Berksfile.lock
 .vagrant
 vagrant.*override*.yml
 
+.terraform
+terraform.tfstate*
+
 .docker
