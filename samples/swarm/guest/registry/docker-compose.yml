@@ -1,9 +1,12 @@
 version: "3"
+
 services:
   core:
     image: registry:latest
     ports:
-      - "80:80"
+      - "5000:5000"
+    volumes:
+      - /vagrant/.docker/swarm/registry/core-registry:/var/lib/registry
     deploy:
       mode: replicated
       replicas: 1

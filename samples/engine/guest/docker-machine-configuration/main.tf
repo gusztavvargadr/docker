@@ -10,12 +10,12 @@ provider "template" {
   version = "1.0.0"
 }
 
-variable "domain" {
-  default = "local"
-}
-
 variable "machines" {
   default = "default"
+}
+
+variable "domain" {
+  default = "local"
 }
 
 variable "path" {
@@ -23,11 +23,12 @@ variable "path" {
 }
 
 locals {
+  machines = ["${split(",", var.machines)}"]
+
   tls_algorithm                  = "RSA"
   tls_cert_validity_period_hours = 8760
   tls_domain                     = "${var.domain}"
 
-  machines     = ["${split(",", var.machines)}"]
   storage_path = "${var.path}"
 
   base_path    = "/data"
@@ -199,7 +200,7 @@ resource "local_file" "machine_config_machine" {
 }
 
 data "template_file" "server_config_linux_machine" {
-  template = "${file("${path.module}/templates/docker")}"
+  template = "${file("${path.module}/templates/docker.etc")}"
 
   count = "${length(local.machines)}"
 }

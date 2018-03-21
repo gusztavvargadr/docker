@@ -33,8 +33,7 @@ machines:
         path: join.sh
         args:
           - bootstrap
-          - <%= ENV['DOCKER_SWARM_MANAGER_TOKEN'] %>
-    count: 3
+          - manager
   worker-u14:
     <<: *machine_u14
     provisioners:
@@ -43,14 +42,12 @@ machines:
         path: join.sh
         args:
           - manager
-          - <%= ENV['DOCKER_SWARM_WORKER_TOKEN'] %>
-    count: 2
+          - worker
   worker-w16sc:
     <<: *machine_w16sc
     provisioners:
       shell:
         path: join.ps1
         args:
-          - manager.host.swarm.samples.docker.local
-          - <%= ENV['DOCKER_SWARM_WORKER_TOKEN'] %>
-    count: 2
+          - manager
+          - worker

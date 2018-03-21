@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   core:
     image: dockersamples/visualizer:latest

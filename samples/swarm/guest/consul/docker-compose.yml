@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   bootstrap:
     image: consul:latest
@@ -14,22 +15,23 @@ services:
       placement:
         constraints:
           - node.role == manager
+          - node.platform.os == linux
       restart_policy:
         condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
-        # order: start-first
   server:
     image: consul:latest
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     command:
       - agent
-      - -ui
-      - -retry-join=bootstrap
-      - -client=0.0.0.0
       - -server
+      - -retry-join=bootstrap
+      - -retry-join=server
+      - -ui
+      - -client=0.0.0.0
     ports:
       - "8500:8500"
     deploy:
@@ -43,15 +45,14 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
-        # order: start-first
   client:
     image: consul:latest
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     command:
       - agent
-      - -ui
       - -retry-join=server
+      - -ui
     deploy:
       mode: global
       placement:
@@ -63,7 +64,8 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
-        # order: start-first
+
+# order: start-first
 
 # check vagrant sample for more options
 #   datacenter:

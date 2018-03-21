@@ -1,5 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 docker swarm init --advertise-addr $1
 
-docker swarm join-token manager
+mkdir -p /vagrant/.docker/swarm
+
+docker swarm join-token -q manager > /vagrant/.docker/swarm/manager.token
+docker swarm join-token -q worker > /vagrant/.docker/swarm/worker.token
