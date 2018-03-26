@@ -8,10 +8,10 @@ defaults:
       synced_folders:
         ../../../engine/guest: /vagrant-docker-engine
         ../../guest: /vagrant-docker-swarm
-    u14: &machine_u14
+    linux: &machine_linux
       <<: *machine_core
-      box: gusztavvargadr/u14
-    w16sc: &machine_w16sc
+      box: gusztavvargadr/u16s-dc
+    windows: &machine_windows
       <<: *machine_core
       box: gusztavvargadr/w16sc-de
 
@@ -19,32 +19,29 @@ environment: host.swarm.samples.docker
 
 machines:
   bootstrap:
-    <<: *machine_u14
+    <<: *machine_linux
     provisioners:
-      docker:
       shell:
         path: init.sh
         args: eth0
   manager:
-    <<: *machine_u14
+    <<: *machine_linux
     provisioners:
-      docker:
       shell:
         path: join.sh
         args:
           - bootstrap
           - manager
-  worker-u14:
-    <<: *machine_u14
+  worker-linux:
+    <<: *machine_linux
     provisioners:
-      docker:
       shell:
         path: join.sh
         args:
           - manager
           - worker
-  worker-w16sc:
-    <<: *machine_w16sc
+  worker-windows:
+    <<: *machine_windows
     provisioners:
       shell:
         path: join.ps1
