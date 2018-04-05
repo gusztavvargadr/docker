@@ -1,8 +1,0 @@
-DOCKER_OPTS='
--H tcp://0.0.0.0:2376
--H unix:///var/run/docker.sock
---tlsverify
---tlscacert /etc/docker/ca.pem
---tlscert /etc/docker/server.pem
---tlskey /etc/docker/server-key.pem
-'

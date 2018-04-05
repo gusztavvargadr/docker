@@ -181,7 +181,7 @@ resource "local_file" "server_cert_machine" {
 }
 
 data "template_file" "machine_config_machine" {
-  template = "${file("${path.module}/templates/config.json")}"
+  template = "${file("${path.module}/templates/machine.json")}"
 
   vars {
     server = "${element(local.machines, count.index)}"
@@ -200,27 +200,27 @@ resource "local_file" "machine_config_machine" {
 }
 
 data "template_file" "server_config_linux_machine" {
-  template = "${file("${path.module}/templates/docker.etc")}"
+  template = "${file("${path.module}/templates/server.linux.json")}"
 
   count = "${length(local.machines)}"
 }
 
 resource "local_file" "server_config_linux_machine" {
   content  = "${element(data.template_file.server_config_linux_machine.*.rendered, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/docker"
+  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/server.linux.json"
 
   count = "${length(local.machines)}"
 }
 
 data "template_file" "server_config_windows_machine" {
-  template = "${file("${path.module}/templates/daemon.json")}"
+  template = "${file("${path.module}/templates/server.windows.json")}"
 
   count = "${length(local.machines)}"
 }
 
 resource "local_file" "server_config_windows_machine" {
   content  = "${element(data.template_file.server_config_windows_machine.*.rendered, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/daemon.json"
+  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/server.windows.json"
 
   count = "${length(local.machines)}"
 }
