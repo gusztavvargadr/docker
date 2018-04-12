@@ -1,7 +1,5 @@
 #!/bin/sh
 
-sleep 5s
-
 docker swarm init --advertise-addr $1
 
 mkdir -p /vagrant/.docker/swarm

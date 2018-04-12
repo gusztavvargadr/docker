@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 services:
   bootstrap:
@@ -12,10 +12,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-          - node.platform.os == linux
+      endpoint_mode: dnsrr
       restart_policy:
         condition: on-failure
       update_config:
@@ -23,19 +20,24 @@ services:
         delay: 10s
   server:
     image: consul:latest
+    volumes:
+      - data:/consul/data
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     command:
       - agent
       - -server
       - -retry-join=bootstrap
-      - -retry-join=server
       - -ui
       - -client=0.0.0.0
     ports:
-      - "8500:8500"
+      - target: 8500
+        published: 8500
+        protocol: tcp
+        mode: host
     deploy:
       mode: global
+      endpoint_mode: dnsrr
       placement:
         constraints:
           - node.role == manager
@@ -47,6 +49,8 @@ services:
         delay: 10s
   client:
     image: consul:latest
+    volumes:
+      - data:/consul/data
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     command:
@@ -55,6 +59,7 @@ services:
       - -ui
     deploy:
       mode: global
+      endpoint_mode: dnsrr
       placement:
         constraints:
           - node.role == worker
@@ -64,6 +69,9 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
+
+volumes:
+  data:
 
 # order: start-first
 

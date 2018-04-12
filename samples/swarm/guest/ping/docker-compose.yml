@@ -8,7 +8,6 @@ services:
       mode: global
       placement:
         constraints:
-          - node.role == worker
           - node.platform.os == linux
   windows:
     image: microsoft/nanoserver:latest
@@ -17,5 +16,4 @@ services:
       mode: global
       placement:
         constraints:
-          - node.role == worker
           - node.platform.os == windows

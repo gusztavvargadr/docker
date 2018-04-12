@@ -4,9 +4,9 @@ services:
   core:
     image: dockersamples/visualizer:latest
     ports:
-      - "8080:8080"
+      - 8080:8080
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: global
       placement:
