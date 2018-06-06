@@ -1,7 +1,8 @@
 # Docker
 
 <!-- TODOs
-clusters: reader aliases
+clusters: leader aliases
+proper unix folder names for containers (/user/bin, /tmp/, etc)
 terraform builder as own repo
   also for windows
   daemon.json for terraform unix as well
@@ -17,4 +18,14 @@ virtualbox test
   private network dhcp and resolve
 helper scripts hostname
 compose vars (ip / name)
+
+vagrant environment naming (exclude "samples", name-tenant-env)
+
+samples
++consul
++consul-template
++vault
++dotnet core web
++dotnet fx web
++swarm manager
 -->

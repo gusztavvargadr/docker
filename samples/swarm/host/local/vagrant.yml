@@ -13,7 +13,7 @@ defaults:
       box: gusztavvargadr/u16s-dc
     windows: &machine_windows
       <<: *machine_core
-      box: gusztavvargadr/w16sc-de
+      box: gusztavvargadr/w16s-de
 
 environment: host.swarm.samples.docker
 
