@@ -1,7 +1,0 @@
-require "#{File.dirname(__FILE__)}/../../berkshelf"
-
-gusztavvargadr_sources
-
-gusztavvargadr_docker_cookbook '', 'test'
-gusztavvargadr_docker_cookbook
-gusztavvargadr_chef_cookbook 'windows'

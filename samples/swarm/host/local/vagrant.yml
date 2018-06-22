@@ -5,9 +5,6 @@ defaults:
       providers:
         virtualbox:
         hyperv:
-      synced_folders:
-        ../../../engine/guest: /vagrant-docker-engine
-        ../../guest: /vagrant-docker-swarm
     linux: &machine_linux
       <<: *machine_core
       box: gusztavvargadr/u16s-dc
@@ -15,7 +12,7 @@ defaults:
       <<: *machine_core
       box: gusztavvargadr/w16s-de
 
-environment: host.swarm.samples.docker
+environment: swarm.docker
 
 machines:
   bootstrap:
@@ -26,6 +23,9 @@ machines:
         args: eth0
   manager:
     <<: *machine_linux
+    synced_folders:
+      ../../../engine/guest: /vagrant-docker-engine
+      ../../guest: /vagrant-docker-swarm
     provisioners:
       shell:
         path: join.sh

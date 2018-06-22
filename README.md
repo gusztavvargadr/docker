@@ -21,6 +21,8 @@ compose vars (ip / name)
 
 vagrant environment naming (exclude "samples", name-tenant-env)
 
+unilicense
+
 samples
 +consul
 +consul-template

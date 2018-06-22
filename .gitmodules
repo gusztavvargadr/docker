@@ -1,6 +1,3 @@
 [submodule "lib/gusztavvargadr/vagrant"]
 	path = lib/gusztavvargadr/vagrant
 	url = https://github.com/gusztavvargadr/vagrant.git
-[submodule "lib/gusztavvargadr/chef"]
-	path = lib/gusztavvargadr/chef
-	url = https://github.com/gusztavvargadr/chef.git

@@ -7,11 +7,8 @@ defaults:
         hyperv:
       synced_folders:
         ../../guest: /vagrant-docker-engine
-      provisioners:
-        shell:
-          inline: docker run hello-world
 
-environment: host.engine.samples.docker
+environment: engine.docker
 
 machines:
   linux:
