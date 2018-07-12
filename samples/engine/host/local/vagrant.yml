@@ -6,7 +6,7 @@ defaults:
         virtualbox:
         hyperv:
       synced_folders:
-        ../../guest: /vagrant-docker-engine
+        ../../../..: /vagrant-repo
 
 environment: engine.docker
 

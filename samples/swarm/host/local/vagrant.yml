@@ -24,8 +24,7 @@ machines:
   manager:
     <<: *machine_linux
     synced_folders:
-      ../../../engine/guest: /vagrant-docker-engine
-      ../../guest: /vagrant-docker-swarm
+      ../../../..: /vagrant-repo
     provisioners:
       shell:
         path: join.sh
