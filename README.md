@@ -1,6 +1,34 @@
 # Docker
 
 <!-- TODOs
+tls
+  prevent duplication
+
+octopus
+  clean up / unregister
+  samples with real projects
+  tentacle for running terraform / packer
+  env ps for selecting matching profiles - fetch from consul / vault
+  terraform chef solo
+  channels with version number
+  tentacle reconfigure
+
+dotnet
+  cookbook for frameworks (include core)
+  ngen
+  samples
+
+consul
+  consul config cleanup (server and client addresses)
+  dns, forwarding
+  separate tokens
+  mutliple dcs
+  consul acl dynamic bootstrap
+  consul cookbook: open ports
+
+vault
+  ha with chef
+
 clusters: leader aliases
 proper unix folder names for containers (/user/bin, /tmp/, etc)
 terraform builder as own repo

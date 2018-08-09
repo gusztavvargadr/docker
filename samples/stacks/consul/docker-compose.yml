@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   bootstrap:
-    image: consul:latest
+    image: consul:1.2.2
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     command:
@@ -13,13 +13,17 @@ services:
       mode: replicated
       replicas: 1
       endpoint_mode: dnsrr
+      placement:
+        constraints:
+          - node.platform.os == linux
+          - node.role == manager
       restart_policy:
         condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
   server:
-    image: consul:latest
+    image: consul:1.2.2
     volumes:
       - data:/consul/data
     environment:
@@ -40,15 +44,15 @@ services:
       endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.role == manager
           - node.platform.os == linux
+          - node.role == manager
       restart_policy:
         condition: on-failure
       update_config:
         parallelism: 1
         delay: 10s
   client:
-    image: consul:latest
+    image: consul:1.2.2
     volumes:
       - data:/consul/data
     environment:
@@ -62,8 +66,8 @@ services:
       endpoint_mode: dnsrr
       placement:
         constraints:
-          - node.role == worker
           - node.platform.os == linux
+          - node.role == worker
       restart_policy:
         condition: on-failure
       update_config:

@@ -1,0 +1,32 @@
+---
+defaults:
+  providers:
+    core: &provider_core
+      memory: 2048
+      cpus: 2
+  machines:
+    core: &machine_core
+      providers:
+        virtualbox:
+          <<: *provider_core
+        hyperv:
+          <<: *provider_core
+      synced_folders:
+        ../../..: /src/gusztavvargadr/docker
+
+environment: engine.docker
+tenant: local
+
+machines:
+  u16s:
+    <<: *machine_core
+    box: gusztavvargadr/u16s-dc
+  w10e:
+    <<: *machine_core
+    box: gusztavvargadr/w10e-dc
+  w16s:
+    <<: *machine_core
+    box: gusztavvargadr/w16s-de
+  w16sc:
+    <<: *machine_core
+    box: gusztavvargadr/w16sc-de

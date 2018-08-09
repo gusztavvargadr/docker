@@ -1,5 +1,5 @@
 param (
-  [string]$Name = "hello-world"
+  [string]$Name
 )
 
 docker run --interactive --tty gusztavvargadr/$($Name):latest $argumentList

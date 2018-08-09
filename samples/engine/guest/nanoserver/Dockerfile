@@ -1,1 +1,0 @@
-FROM microsoft/nanoserver:latest

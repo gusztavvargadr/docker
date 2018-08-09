@@ -1,10 +1,7 @@
-.kitchen
-Berksfile.lock
-
 .vagrant
 vagrant.*override*.yml
 
+.docker
+
 .terraform
 terraform.tfstate*
-
-.docker

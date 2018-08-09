@@ -2,7 +2,7 @@ version: "3"
 
 services:
   core:
-    image: registry:latest
+    image: registry:2.6.2
     ports:
       - 5000:5000
     volumes:
@@ -10,3 +10,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.platform.os == linux

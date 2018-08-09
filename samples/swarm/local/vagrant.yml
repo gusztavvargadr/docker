@@ -1,0 +1,76 @@
+---
+defaults:
+  providers:
+    core: &provider_core
+      memory: 2048
+      cpus: 2
+  machines:
+    core: &machine_core
+      providers:
+        virtualbox:
+          <<: *provider_core
+        hyperv:
+          <<: *provider_core
+    u16s: &machine_u16s
+      <<: *machine_core
+      box: gusztavvargadr/u16s-dc
+
+environment: swarm.docker
+tenant: local
+
+machines:
+  bootstrap:
+    <<: *machine_u16s
+    aliases:
+      - join
+    provisioners:
+      shell:
+        path: init.sh
+        args: eth0
+  manager:
+    <<: *machine_u16s
+    # aliases:
+    #   - join
+    synced_folders:
+      ../../..: /src/gusztavvargadr/docker
+    provisioners:
+      shell:
+        path: join.sh
+        args:
+          - join
+          - manager
+  worker-u16s:
+    <<: *machine_u16s
+    provisioners:
+      shell:
+        path: join.sh
+        args:
+          - join
+          - worker
+  worker-w10e:
+    <<: *machine_core
+    box: gusztavvargadr/w10e-dc
+    provisioners:
+      shell:
+        path: join.ps1
+        args:
+          - join
+          - worker
+  worker-w16s:
+    <<: *machine_core
+    box: gusztavvargadr/w16s-de
+    provisioners:
+      shell:
+        path: join.ps1
+        args:
+          - join
+          - worker
+  worker-w16sc:
+    <<: *machine_core
+    box: gusztavvargadr/w16sc-de
+    provisioners:
+      shell:
+        path: join.ps1
+        args:
+          - join
+          - worker

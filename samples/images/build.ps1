@@ -1,5 +1,5 @@
 param (
-  [string]$Name = "hello-world"
+  [string]$Name
 )
 
 docker build --tag gusztavvargadr/$Name $Name $argumentList
