@@ -6,7 +6,7 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - /vagrant/.docker/swarm/registry/core-registry:/var/lib/registry
+      - /data/docker/swarm/registry/core/data:/var/lib/registry
     deploy:
       mode: replicated
       replicas: 1

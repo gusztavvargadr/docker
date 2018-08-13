@@ -11,16 +11,14 @@ defaults:
           <<: *provider_core
         hyperv:
           <<: *provider_core
-    u16s: &machine_u16s
-      <<: *machine_core
-      box: gusztavvargadr/u16s-dc
 
 environment: swarm.docker
 tenant: local
 
 machines:
   bootstrap:
-    <<: *machine_u16s
+    <<: *machine_core
+    box: <%= ENV['VAGRANT_BOX_DOCKER_LINUX'] || 'gusztavvargadr/u16s-dc' %>
     aliases:
       - join
     provisioners:
@@ -28,46 +26,31 @@ machines:
         path: init.sh
         args: eth0
   manager:
-    <<: *machine_u16s
+    <<: *machine_core
+    box: <%= ENV['VAGRANT_BOX_DOCKER_LINUX'] || 'gusztavvargadr/u16s-dc' %>
     # aliases:
     #   - join
     synced_folders:
       ../../..: /src/gusztavvargadr/docker
+      .docker: /data/docker
     provisioners:
       shell:
         path: join.sh
         args:
           - join
           - manager
-  worker-u16s:
-    <<: *machine_u16s
+  worker-linux:
+    <<: *machine_core
+    box: <%= ENV['VAGRANT_BOX_DOCKER_LINUX'] || 'gusztavvargadr/u16s-dc' %>
     provisioners:
       shell:
         path: join.sh
         args:
           - join
           - worker
-  worker-w10e:
+  worker-windows:
     <<: *machine_core
-    box: gusztavvargadr/w10e-dc
-    provisioners:
-      shell:
-        path: join.ps1
-        args:
-          - join
-          - worker
-  worker-w16s:
-    <<: *machine_core
-    box: gusztavvargadr/w16s-de
-    provisioners:
-      shell:
-        path: join.ps1
-        args:
-          - join
-          - worker
-  worker-w16sc:
-    <<: *machine_core
-    box: gusztavvargadr/w16sc-de
+    box: <%= ENV['VAGRANT_BOX_DOCKER_WINDOWS'] || 'gusztavvargadr/w16sc-de' %>
     provisioners:
       shell:
         path: join.ps1

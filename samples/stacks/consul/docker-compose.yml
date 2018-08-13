@@ -3,12 +3,16 @@ version: "3.2"
 services:
   bootstrap:
     image: consul:1.2.2
-    environment:
-      - CONSUL_BIND_INTERFACE=eth0
     command:
       - agent
       - -server
       - -bootstrap-expect=1
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    networks:
+      default:
+        aliases:
+          - join
     deploy:
       mode: replicated
       replicas: 1
@@ -24,16 +28,20 @@ services:
         delay: 10s
   server:
     image: consul:1.2.2
-    volumes:
-      - data:/consul/data
-    environment:
-      - CONSUL_BIND_INTERFACE=eth0
     command:
       - agent
       - -server
-      - -retry-join=bootstrap
+      - -retry-join=join
       - -ui
       - -client=0.0.0.0
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    volumes:
+      - server_data:/consul/data
+    # networks:
+    #   default:
+    #     aliases:
+    #       - join
     ports:
       - target: 8500
         published: 8500
@@ -53,14 +61,14 @@ services:
         delay: 10s
   client:
     image: consul:1.2.2
-    volumes:
-      - data:/consul/data
-    environment:
-      - CONSUL_BIND_INTERFACE=eth0
     command:
       - agent
-      - -retry-join=server
+      - -retry-join=join
       - -ui
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    volumes:
+      - client_data:/consul/data
     deploy:
       mode: global
       endpoint_mode: dnsrr
@@ -75,7 +83,13 @@ services:
         delay: 10s
 
 volumes:
-  data:
+  server_data:
+  client_data:
+
+networks:
+  default:
+    driver: overlay
+    attachable: true
 
 # order: start-first
 

@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  blueocean:
+    image: jenkinsci/blueocean:1.7.2
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - /data/docker/swarm/jenkins/blueocean/data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.platform.os == linux

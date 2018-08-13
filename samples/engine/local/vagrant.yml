@@ -13,20 +13,15 @@ defaults:
           <<: *provider_core
       synced_folders:
         ../../..: /src/gusztavvargadr/docker
+        .docker: /data/docker
 
 environment: engine.docker
 tenant: local
 
 machines:
-  u16s:
+  linux:
     <<: *machine_core
-    box: gusztavvargadr/u16s-dc
-  w10e:
+    box: <%= ENV['VAGRANT_BOX_DOCKER_LINUX'] || 'gusztavvargadr/u16s-dc' %>
+  windows:
     <<: *machine_core
-    box: gusztavvargadr/w10e-dc
-  w16s:
-    <<: *machine_core
-    box: gusztavvargadr/w16s-de
-  w16sc:
-    <<: *machine_core
-    box: gusztavvargadr/w16sc-de
+    box: <%= ENV['VAGRANT_BOX_DOCKER_WINDOWS'] || 'gusztavvargadr/w16sc-de' %>
