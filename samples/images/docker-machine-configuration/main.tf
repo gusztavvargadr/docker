@@ -31,9 +31,7 @@ locals {
 
   storage_path = "${var.path}"
 
-  base_path    = "/data"
-  docker_path  = "${local.base_path}/.docker"
-  machine_path = "${local.docker_path}/machine"
+  output_path  = "/data"
 }
 
 resource "tls_private_key" "ca" {
@@ -59,12 +57,12 @@ resource "tls_self_signed_cert" "ca" {
 
 resource "local_file" "ca_private_key_certs" {
   content  = "${tls_private_key.ca.private_key_pem}"
-  filename = "${local.machine_path}/certs/ca-key.pem"
+  filename = "${local.output_path}/certs/ca-key.pem"
 }
 
 resource "local_file" "ca_cert_certs" {
   content  = "${tls_self_signed_cert.ca.cert_pem}"
-  filename = "${local.machine_path}/certs/ca.pem"
+  filename = "${local.output_path}/certs/ca.pem"
 }
 
 resource "tls_private_key" "client" {
@@ -100,12 +98,12 @@ resource "tls_locally_signed_cert" "client" {
 
 resource "local_file" "client_private_key_certs" {
   content  = "${tls_private_key.client.private_key_pem}"
-  filename = "${local.machine_path}/certs/key.pem"
+  filename = "${local.output_path}/certs/key.pem"
 }
 
 resource "local_file" "client_cert_certs" {
   content  = "${tls_locally_signed_cert.client.cert_pem}"
-  filename = "${local.machine_path}/certs/cert.pem"
+  filename = "${local.output_path}/certs/cert.pem"
 }
 
 resource "tls_private_key" "server" {
@@ -147,35 +145,35 @@ resource "tls_locally_signed_cert" "server" {
 
 resource "local_file" "ca_cert_machine" {
   content  = "${tls_self_signed_cert.ca.cert_pem}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/ca.pem"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/ca.pem"
 
   count = "${length(local.machines)}"
 }
 
 resource "local_file" "client_private_key_machine" {
   content  = "${tls_private_key.client.private_key_pem}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/key.pem"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/key.pem"
 
   count = "${length(local.machines)}"
 }
 
 resource "local_file" "client_cert_machine" {
   content  = "${tls_locally_signed_cert.client.cert_pem}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/cert.pem"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/cert.pem"
 
   count = "${length(local.machines)}"
 }
 
 resource "local_file" "server_private_key_machine" {
   content  = "${element(tls_private_key.server.*.private_key_pem, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/server-key.pem"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/server-key.pem"
 
   count = "${length(local.machines)}"
 }
 
 resource "local_file" "server_cert_machine" {
   content  = "${element(tls_locally_signed_cert.server.*.cert_pem, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/server.pem"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/server.pem"
 
   count = "${length(local.machines)}"
 }
@@ -194,7 +192,7 @@ data "template_file" "machine_config_machine" {
 
 resource "local_file" "machine_config_machine" {
   content  = "${element(data.template_file.machine_config_machine.*.rendered, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/config.json"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/config.json"
 
   count = "${length(local.machines)}"
 }
@@ -207,7 +205,7 @@ data "template_file" "server_config_linux_machine" {
 
 resource "local_file" "server_config_linux_machine" {
   content  = "${element(data.template_file.server_config_linux_machine.*.rendered, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/server.linux.json"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/server.linux.json"
 
   count = "${length(local.machines)}"
 }
@@ -220,7 +218,7 @@ data "template_file" "server_config_windows_machine" {
 
 resource "local_file" "server_config_windows_machine" {
   content  = "${element(data.template_file.server_config_windows_machine.*.rendered, count.index)}"
-  filename = "${local.machine_path}/machines/${element(local.machines, count.index)}/server.windows.json"
+  filename = "${local.output_path}/machines/${element(local.machines, count.index)}/server.windows.json"
 
   count = "${length(local.machines)}"
 }
@@ -231,7 +229,7 @@ data "template_file" "server_script_linux" {
 
 resource "local_file" "server_script_linux" {
   content  = "${data.template_file.server_script_linux.rendered}"
-  filename = "${local.docker_path}/server.sh"
+  filename = "${local.output_path}/server.sh"
 }
 
 data "template_file" "server_script_windows" {
@@ -240,23 +238,23 @@ data "template_file" "server_script_windows" {
 
 resource "local_file" "server_script_windows" {
   content  = "${data.template_file.server_script_windows.rendered}"
-  filename = "${local.docker_path}/server.ps1"
+  filename = "${local.output_path}/server.ps1"
 }
 
-data "template_file" "machine_script_linux" {
-  template = "${file("${path.module}/templates/machine.sh")}"
+data "template_file" "client_script_linux" {
+  template = "${file("${path.module}/templates/client.sh")}"
 }
 
-resource "local_file" "machine_script_linux" {
-  content  = "${data.template_file.machine_script_linux.rendered}"
-  filename = "${local.docker_path}/machine.sh"
+resource "local_file" "client_script_linux" {
+  content  = "${data.template_file.client_script_linux.rendered}"
+  filename = "${local.output_path}/client.sh"
 }
 
-data "template_file" "machine_script_windows" {
-  template = "${file("${path.module}/templates/machine.ps1")}"
+data "template_file" "client_script_windows" {
+  template = "${file("${path.module}/templates/client.ps1")}"
 }
 
-resource "local_file" "machine_script_windows" {
-  content  = "${data.template_file.machine_script_windows.rendered}"
-  filename = "${local.docker_path}/machine.ps1"
+resource "local_file" "client_script_windows" {
+  content  = "${data.template_file.client_script_windows.rendered}"
+  filename = "${local.output_path}/client.ps1"
 }

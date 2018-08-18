@@ -1,7 +1,12 @@
 .vagrant
-vagrant.*override*.yml
+vagrant.override.yml
+
+*.lock.json
+.chef
+Berksfile.lock
 
 .docker
+docker-compose.override.yml
 
 .terraform
 terraform.tfstate*

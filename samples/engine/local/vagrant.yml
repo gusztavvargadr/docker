@@ -1,27 +1,20 @@
----
-defaults:
-  providers:
-    core: &provider_core
-      memory: 2048
-      cpus: 2
-  machines:
-    core: &machine_core
-      providers:
-        virtualbox:
-          <<: *provider_core
-        hyperv:
-          <<: *provider_core
-      synced_folders:
-        ../../..: /src/gusztavvargadr/docker
-        .docker: /data/docker
-
 environment: engine.docker
-tenant: local
+
+hostmanager: true
 
 machines:
+  bootstrap:
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    provisioners:
+      shell_machine_configuration:
+        inline: <%= "cd /src/gusztavvargadr/docker/samples/images; ./build.sh docker-machine-configuration; docker run -v /data/docker/machine:/data gusztavvargadr/docker-machine-configuration linux,windows engine.docker.local #{Dir.pwd}" %>
   linux:
-    <<: *machine_core
-    box: <%= ENV['VAGRANT_BOX_DOCKER_LINUX'] || 'gusztavvargadr/u16s-dc' %>
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.sh linux
   windows:
-    <<: *machine_core
-    box: <%= ENV['VAGRANT_BOX_DOCKER_WINDOWS'] || 'gusztavvargadr/w16sc-de' %>
+    box: <%= VagrantWindowsServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.ps1 windows

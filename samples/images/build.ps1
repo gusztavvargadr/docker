@@ -2,4 +2,4 @@ param (
   [string]$Name
 )
 
-docker build --tag gusztavvargadr/$Name $Name $argumentList
+docker build --tag gusztavvargadr/$Name $PSScriptRoot/$Name $argumentList

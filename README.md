@@ -1,6 +1,13 @@
 # Docker
 
 <!-- TODOs
+firewall for windows join
+terraform packer
+vagrant blocks for swarm nodes, etc
+overrides for core scenarios
+trigger for execute client selection
+machine scripts to optionally persist env vars
+
 tls
   prevent duplication
 

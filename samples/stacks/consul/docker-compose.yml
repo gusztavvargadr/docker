@@ -38,10 +38,6 @@ services:
       - CONSUL_BIND_INTERFACE=eth0
     volumes:
       - server_data:/consul/data
-    # networks:
-    #   default:
-    #     aliases:
-    #       - join
     ports:
       - target: 8500
         published: 8500

@@ -3,6 +3,6 @@ param (
   [string]$Name
 )
 
-$env:MACHINE_STORAGE_PATH=$(Join-Path $pwd ".docker/machine")
+$env:MACHINE_STORAGE_PATH=$PSScriptRoot
 
 docker-machine env $Name | Invoke-Expression

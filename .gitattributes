@@ -3,5 +3,3 @@
 *.sh text eol=lf
 *.tf text eol=lf
 *.etc text eol=lf
-
-*.ps1 text eol=crlf
