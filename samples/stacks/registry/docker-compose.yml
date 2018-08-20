@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  core:
+    image: registry:2.6.2
+    ports:
+      - 5000:5000
+    volumes:
+      - /data/docker/swarm/registry/core/data:/var/lib/registry
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.platform.os == linux

@@ -1,0 +1,45 @@
+environment: swarm.docker
+
+hostmanager: true
+
+machines:
+  bootstrap:
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    aliases:
+      - join
+    provisioners:
+      shell_machine_configuration:
+        inline: <%= "cd /src/gusztavvargadr/docker/samples/images; ./build.sh docker-machine-configuration; docker run -v /data/docker/machine:/data gusztavvargadr/docker-machine-configuration manager,worker-linux,worker-windows swarm.docker.local #{Dir.pwd}" %>
+      shell_init:
+        path: init.sh
+        args: eth0
+  manager:
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.sh manager
+      shell_join:
+        path: join.sh
+        args:
+          - join
+          - manager
+  worker-linux:
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.sh worker-linux
+      shell_join:
+        path: join.sh
+        args:
+          - join
+          - worker
+  worker-windows:
+    box: <%= VagrantWindowsServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.ps1 worker-windows
+      shell_join:
+        path: join.ps1
+        args:
+          - join
+          - worker

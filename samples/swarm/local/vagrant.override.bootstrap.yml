@@ -1,0 +1,6 @@
+machines:
+  bootstrap:
+    count: 0
+  manager:
+    aliases:
+      - join

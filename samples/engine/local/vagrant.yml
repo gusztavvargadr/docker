@@ -1,0 +1,20 @@
+environment: engine.docker
+
+hostmanager: true
+
+machines:
+  bootstrap:
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    provisioners:
+      shell_machine_configuration:
+        inline: <%= "cd /src/gusztavvargadr/docker/samples/images; ./build.sh docker-machine-configuration; docker run -v /data/docker/machine:/data gusztavvargadr/docker-machine-configuration linux,windows engine.docker.local #{Dir.pwd}" %>
+  linux:
+    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.sh linux
+  windows:
+    box: <%= VagrantWindowsServerMachine.defaults['box'] %>
+    provisioners:
+      shell_server:
+        inline: cd /data/docker/machine; ./server.ps1 windows
