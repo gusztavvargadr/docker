@@ -2,7 +2,7 @@ version: "3"
 
 services:
   blueocean:
-    image: jenkinsci/blueocean:1.7.2
+    image: jenkinsci/blueocean:1.8.2
     ports:
       - 8080:8080
       - 50000:50000
