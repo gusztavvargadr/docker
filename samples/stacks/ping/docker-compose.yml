@@ -10,7 +10,7 @@ services:
         constraints:
           - node.platform.os == linux
   windows:
-    image: microsoft/nanoserver:sac2016
+    image: microsoft/nanoserver:10.0.14393.2430
     command: ping -t docker.com
     deploy:
       mode: global
