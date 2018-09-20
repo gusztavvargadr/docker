@@ -1,12 +1,12 @@
-version: "3"
+version: '3'
 
 services:
-  core:
-    image: registry:2.6.2
+  default:
+    image: library/registry:2.6.2
+    volumes:
+      - /data/docker/swarm/registry/default/data:/var/lib/registry
     ports:
       - 5000:5000
-    volumes:
-      - /data/docker/swarm/registry/core/data:/var/lib/registry
     deploy:
       mode: replicated
       replicas: 1

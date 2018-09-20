@@ -1,0 +1,5 @@
+{
+  "acl_datacenter": "dc1",
+  "acl_down_policy": "extend-cache",
+  "acl_agent_token": ""
+}

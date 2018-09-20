@@ -1,4 +1,4 @@
-version: "3.2"
+version: '3.2'
 
 services:
   bootstrap:
@@ -8,4 +8,4 @@ services:
     networks:
       default:
         aliases:
-          - join
+          - server_join

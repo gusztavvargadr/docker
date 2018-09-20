@@ -5,8 +5,11 @@ hostmanager: true
 machines:
   bootstrap:
     box: <%= VagrantLinuxServerMachine.defaults['box'] %>
+    synced_folders:
+      /src/gusztavvargadr/docker:
+        source: ../../..
     aliases:
-      - join
+      - manager-join
     provisioners:
       shell_machine_configuration:
         inline: <%= "cd /src/gusztavvargadr/docker/samples/images; ./build.sh docker-machine-configuration; docker run -v /data/docker/machine:/data gusztavvargadr/docker-machine-configuration manager,worker-linux,worker-windows swarm.docker.local #{Dir.pwd}" %>
@@ -21,7 +24,7 @@ machines:
       shell_join:
         path: join.sh
         args:
-          - join
+          - manager-join
           - manager
   worker-linux:
     box: <%= VagrantLinuxServerMachine.defaults['box'] %>
@@ -31,7 +34,7 @@ machines:
       shell_join:
         path: join.sh
         args:
-          - join
+          - manager-join
           - worker
   worker-windows:
     box: <%= VagrantWindowsServerMachine.defaults['box'] %>
@@ -41,5 +44,5 @@ machines:
       shell_join:
         path: join.ps1
         args:
-          - join
+          - manager-join
           - worker

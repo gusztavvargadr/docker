@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  database:
+    image: microsoft/mssql-server-linux:2017-CU10
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: Octopus42-
+    volumes:
+      - /data/docker/volumes/octopus/database/data:/var/opt/mssql
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.platform.os == linux
+  server:
+    image: octopusdeploy/octopusdeploy:2018.8.5
+    environment:
+      sqlDbConnectionString: Server=database,1433;Initial Catalog=Octopus;Persist Security Info=False;User ID=sa;Password=${Octopus42-};MultipleActiveResultSets=False;Connection Timeout=30;
+      OctopusAdminUsername: admin
+      OctopusAdminPassword: Octopus42-
+    volumes:
+      - C:/data/docker/volumes/octopus/server/data:C:/Octopus
+    ports:
+      - 81:81
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.platform.os == windows

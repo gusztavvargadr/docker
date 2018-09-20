@@ -1,0 +1,5 @@
+{
+  "bind_addr": "{{ GetInterfaceIP \"eth0\" }}",
+  "server": true,
+  "retry_join": ["server_join"]
+}

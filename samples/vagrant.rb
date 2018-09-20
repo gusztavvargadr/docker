@@ -4,8 +4,14 @@ require "#{directory}/../lib/gusztavvargadr/vagrant/samples/vagrant"
 
 VagrantMachine.defaults_include(
   'synced_folders' => {
-    '.docker' => '/data/docker',
-    "#{directory}/.." => '/src/gusztavvargadr/docker',
+    '/vagrant' => {
+      'source' => '.vagrant',
+      'disabled' => true,
+    },
+    '/data/docker' => {
+      'source' => '.docker',
+      'create' => true,
+    },
   },
   'providers' => {
     'virtualbox' => {},

@@ -3,4 +3,4 @@ machines:
     count: 0
   manager:
     aliases:
-      - join
+      - manager-join

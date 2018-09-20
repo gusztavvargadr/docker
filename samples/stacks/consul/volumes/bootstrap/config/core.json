@@ -1,0 +1,5 @@
+{
+  "bind_addr": "{{ GetInterfaceIP \"eth0\" }}",
+  "server": true,
+  "bootstrap_expect": 1
+}
