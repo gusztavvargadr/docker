@@ -1,7 +1,8 @@
 {
   "bind_addr": "{{ GetInterfaceIP \"eth0\" }}",
+  "datacenter": "dc1",
   "server": false,
-  "retry_join": ["server_join"],
+  "retry_join": ["join"],
   "client_addr": "0.0.0.0",
   "ui": true
 }

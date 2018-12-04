@@ -1,21 +1,19 @@
 component: swarm
-stack: docker
 
 hostmanager: true
 
 machines:
   bootstrap:
-    box: <%= VagrantLinuxServerMachine.defaults['box'] %>
     synced_folders:
-      /src/gusztavvargadr/docker:
+      /src:
         source: ../../..
     aliases:
-      - manager-join
+      - join
     provisioners:
       shell_machine_configuration:
-        inline: <%= "cd /src/gusztavvargadr/docker/samples/images; ./build.sh docker-machine-configuration; docker run -v /data/docker/machine:/data gusztavvargadr/docker-machine-configuration bootstrap,manager,linux,windows swarm.docker.vagrant.local #{Dir.pwd}" %>
+        inline: <%= "cd /src/samples/images; ./build.sh docker-machine-configuration; docker run -v /vagrant/.docker/machine:/data gusztavvargadr/docker-machine-configuration bootstrap,manager,linux,windows swarm.docker.sandbox.local #{Dir.pwd}/.docker" %>
       shell_server:
-        inline: cd /data/docker/machine; ./server.sh bootstrap
+        inline: cd /vagrant/.docker/machine; ./server.sh bootstrap
       shell_init:
         path: init.sh
         args: eth0
@@ -23,27 +21,27 @@ machines:
     box: <%= VagrantLinuxServerMachine.defaults['box'] %>
     provisioners:
       shell_server:
-        inline: cd /data/docker/machine; ./server.sh manager
+        inline: cd /vagrant/.docker/machine; ./server.sh manager
       shell_join:
         path: join.sh
         args:
-          - manager-join
+          - join.swarm.docker.sandbox.local
           - manager
   linux:
     provisioners:
       shell_server:
-        inline: cd /data/docker/machine; ./server.sh linux
+        inline: cd /vagrant/.docker/machine; ./server.sh linux
       shell_join:
         path: join.sh
         args:
-          - manager-join
+          - join.swarm.docker.sandbox.local
           - worker
   windows:
     provisioners:
+      shell_server:
+        inline: cd /vagrant/.docker/machine; ./server.ps1 windows
       shell_join:
         path: join.ps1
         args:
-          - manager-join
+          - join.swarm.docker.sandbox.local
           - worker
-      shell_server:
-        inline: cd /data/docker/machine; ./server.ps1 windows

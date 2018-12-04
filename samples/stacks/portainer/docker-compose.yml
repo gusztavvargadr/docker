@@ -14,9 +14,9 @@ services:
         constraints:
           - node.platform.os == linux
   ui:
-    image: portainer/portainer:1.19.1
+    image: portainer/portainer:1.19.2
     volumes:
-      - /data/docker/volumes/portainer/ui/data:/data
+      - ui_data:/data
     ports:
       - 9000:9000
     command: -H tcp://tasks.agent:9001 --tlsskipverify
@@ -26,3 +26,11 @@ services:
       placement:
         constraints:
           - node.platform.os == linux
+
+volumes:
+  ui_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /vagrant/.docker/volumes/portainer/ui/data
+      o: bind

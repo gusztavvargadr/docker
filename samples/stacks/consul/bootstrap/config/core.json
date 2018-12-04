@@ -1,5 +1,6 @@
 {
   "bind_addr": "{{ GetInterfaceIP \"eth0\" }}",
+  "datacenter": "dc1",
   "server": true,
-  "retry_join": ["server_join"]
+  "bootstrap_expect": 1
 }

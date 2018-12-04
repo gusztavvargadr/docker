@@ -2,7 +2,7 @@
 
 docker swarm init --advertise-addr $1
 
-mkdir -p /data/docker/swarm
+mkdir -p /vagrant/.docker/swarm
 
-docker swarm join-token -q manager > /data/docker/swarm/manager.token
-docker swarm join-token -q worker > /data/docker/swarm/worker.token
+docker swarm join-token -q manager > /vagrant/.docker/swarm/manager.token
+docker swarm join-token -q worker > /vagrant/.docker/swarm/worker.token

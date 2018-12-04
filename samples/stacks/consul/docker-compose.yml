@@ -2,13 +2,13 @@ version: '3.2'
 
 services:
   bootstrap:
-    image: library/consul:1.2.2
+    image: library/consul:1.4.0
     volumes:
-      - /data/docker/volumes/consul/bootstrap/config:/consul/config
+      - bootstrap_config:/consul/config
     networks:
       default:
         aliases:
-          - server_join
+          - join
     command:
       - agent
     deploy:
@@ -18,9 +18,9 @@ services:
         constraints:
           - node.platform.os == linux
   server:
-    image: library/consul:1.2.2
+    image: library/consul:1.4.0
     volumes:
-      - /data/docker/volumes/consul/server/config:/consul/config
+      - server_config:/consul/config
       - server_data:/consul/data
     command:
       - agent
@@ -35,9 +35,9 @@ services:
         parallelism: 1
         delay: 10s
   client:
-    image: library/consul:1.2.2
+    image: library/consul:1.4.0
     volumes:
-      - /data/docker/volumes/consul/client/config:/consul/config
+      - client_config:/consul/config
     ports:
       - 8500:8500
     command:
@@ -50,17 +50,25 @@ services:
           - node.platform.os == linux
 
 volumes:
+  bootstrap_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: /vagrant/.docker/volumes/consul/bootstrap/config
+      o: bind
+  server_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: /vagrant/.docker/volumes/consul/server/config
+      o: bind
   server_data:
+  client_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: /vagrant/.docker/volumes/consul/client/config
+      o: bind
 
 networks:
   default:
-
-# order: start-first
-
-# check vagrant sample for more options
-#   datacenter:
-#   "acl_agent_token": "",
-#   "acl_datacenter": "dc1",
-#   "acl_default_policy": "deny",
-#   "acl_master_token": "",
-#   "encrypt": "",

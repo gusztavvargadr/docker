@@ -1,6 +1,6 @@
 storage "consul" {
   address = "consul_client:8500"
-  token   = ""
+  token   = "master"
 }
 
 listener "tcp" {

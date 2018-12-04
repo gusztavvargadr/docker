@@ -50,18 +50,18 @@
             "IsExperimental": false
         },
         "AuthOptions": {
-            "CertDir": "${path}/.docker/machine/certs",
-            "CaCertPath": "${path}/.docker/machine/certs/ca.pem",
-            "CaPrivateKeyPath": "${path}/.docker/machine/certs/ca-key.pem",
+            "CertDir": "${path}/machine/certs",
+            "CaCertPath": "${path}/machine/certs/ca.pem",
+            "CaPrivateKeyPath": "${path}/machine/certs/ca-key.pem",
             "CaCertRemotePath": "",
-            "ServerCertPath": "${path}/.docker/machine/machines/${server}/server.pem",
-            "ServerKeyPath": "${path}/.docker/machine/machines/${server}/server-key.pem",
-            "ClientKeyPath": "${path}/.docker/machine/certs/key.pem",
+            "ServerCertPath": "${path}/machine/machines/${server}/server.pem",
+            "ServerKeyPath": "${path}/machine/machines/${server}/server-key.pem",
+            "ClientKeyPath": "${path}/machine/certs/key.pem",
             "ServerCertRemotePath": "",
             "ServerKeyRemotePath": "",
-            "ClientCertPath": "${path}/.docker/machine/certs/cert.pem",
+            "ClientCertPath": "${path}/machine/certs/cert.pem",
             "ServerCertSANs": [],
-            "StorePath": "${path}/.docker/machine/machines/${server}"
+            "StorePath": "${path}/machine/machines/${server}"
         }
     },
     "Name": "${server}"

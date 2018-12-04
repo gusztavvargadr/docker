@@ -1,10 +1,10 @@
 version: '3'
 
 services:
-  default:
+  server:
     image: library/registry:2.6.2
     volumes:
-      - /data/docker/swarm/registry/default/data:/var/lib/registry
+      - server_data:/var/lib/registry
     ports:
       - 5000:5000
     deploy:
@@ -13,3 +13,11 @@ services:
       placement:
         constraints:
           - node.platform.os == linux
+
+volumes:
+  server_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /vagrant/.docker/volumes/registry/server/data
+      o: bind
